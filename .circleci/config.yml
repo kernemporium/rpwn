@@ -9,22 +9,31 @@ jobs:
       - restore_cache:
           key: project-cache
       - run:
+          name: Install rust stable 
+          command: rustup install stable 
+      - run:
+          name: Install rust nightly 
+          command: rustup install nightly 
+      - run:
+          name: Install rustfmt
+          command: rustup component add rustfmt
+      - run:
           name: Check formatting
           command: cargo fmt -- --check
       - run:
-          name: Nightly Build
+          name: Build Nightly
           command: |
             rustup run nightly rustc --version --verbose
             rustup run nightly cargo --version --verbose
             rustup run nightly cargo build
       - run:
-          name: Stable Build
+          name: Build Stable
           command: |
             rustup run stable rustc --version --verbose
             rustup run stable cargo --version --verbose
             rustup run stable cargo build 
       - run:
-          name: Test
+          name: Run Tests
           command: rustup run stable cargo test
       - save_cache:
           key: project-cache
